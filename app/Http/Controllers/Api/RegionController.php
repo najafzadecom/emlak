@@ -6,15 +6,17 @@ use App\Http\Controllers\ApiController;
 use App\Models\Region;
 use App\Http\Requests\StoreRegionRequest;
 use App\Http\Requests\UpdateRegionRequest;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class RegionController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
         //
     }
@@ -22,45 +24,58 @@ class RegionController extends ApiController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreRegionRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreRegionRequest $request
+     * @return JsonResponse
      */
-    public function store(StoreRegionRequest $request)
+    public function store(StoreRegionRequest $request): JsonResponse
     {
-        //
+        $data = Region::create($request->validated());
+        return $this
+            ->appendBody('data', $data)
+            ->respondSuccessMessage('Data successfully created');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Region  $region
-     * @return \Illuminate\Http\Response
+     * @param Region $region
+     * @return JsonResponse
      */
-    public function show(Region $region)
+    public function show(Region $region): JsonResponse
     {
-        //
+        return $this
+            ->appendBody('data', $region)
+            ->respondSuccessMessage('Data successfully returned');
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateRegionRequest  $request
-     * @param  \App\Models\Region  $region
-     * @return \Illuminate\Http\Response
+     * @param UpdateRegionRequest $request
+     * @param Region $region
+     * @return JsonResponse
      */
-    public function update(UpdateRegionRequest $request, Region $region)
+    public function update(UpdateRegionRequest $request, Region $region): JsonResponse
     {
-        //
+        $region->update($request->validated());
+        return $this
+            ->appendBody('data', $region)
+            ->respondSuccessMessage('Data successfully updated');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Region  $region
-     * @return \Illuminate\Http\Response
+     * @param Region $region
+     * @return JsonResponse
      */
-    public function destroy(Region $region)
+    public function destroy(Region $region): JsonResponse
     {
-        //
+        if($region->delete()) {
+
+            return $this->respondSuccessMessage('Data successfully deleted');
+        }
+
+        return $this->respondSuccessMessage('Unknown error');
     }
 }

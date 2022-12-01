@@ -6,15 +6,16 @@ use App\Http\Controllers\ApiController;
 use App\Models\Setting;
 use App\Http\Requests\StoreSettingRequest;
 use App\Http\Requests\UpdateSettingRequest;
+use Illuminate\Http\JsonResponse;
 
 class SettingController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
         //
     }
@@ -22,45 +23,58 @@ class SettingController extends ApiController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreSettingRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreSettingRequest $request
+     * @return JsonResponse
      */
-    public function store(StoreSettingRequest $request)
+    public function store(StoreSettingRequest $request): JsonResponse
     {
-        //
+        $data = Setting::create($request->validated());
+        return $this
+            ->appendBody('data', $data)
+            ->respondSuccessMessage('Data successfully created');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Setting  $setting
-     * @return \Illuminate\Http\Response
+     * @param Setting $setting
+     * @return JsonResponse
      */
-    public function show(Setting $setting)
+    public function show(Setting $setting): JsonResponse
     {
-        //
+        return $this
+            ->appendBody('data', $setting)
+            ->respondSuccessMessage('Data successfully returned');
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateSettingRequest  $request
-     * @param  \App\Models\Setting  $setting
-     * @return \Illuminate\Http\Response
+     * @param UpdateSettingRequest $request
+     * @param Setting $setting
+     * @return JsonResponse
      */
-    public function update(UpdateSettingRequest $request, Setting $setting)
+    public function update(UpdateSettingRequest $request, Setting $setting): JsonResponse
     {
-        //
+        $setting->update($request->validated());
+        return $this
+            ->appendBody('data', $setting)
+            ->respondSuccessMessage('Data successfully updated');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Setting  $setting
-     * @return \Illuminate\Http\Response
+     * @param Setting $setting
+     * @return JsonResponse
      */
-    public function destroy(Setting $setting)
+    public function destroy(Setting $setting): JsonResponse
     {
-        //
+        if($setting->delete()) {
+
+            return $this->respondSuccessMessage('Data successfully deleted');
+        }
+
+        return $this->respondSuccessMessage('Unknown error');
     }
 }

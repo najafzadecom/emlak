@@ -28,7 +28,10 @@ class LanguageController extends ApiController
      */
     public function store(StoreLanguageRequest $request): JsonResponse
     {
-        //
+        $data = Language::create($request->validated());
+        return $this
+            ->appendBody('data', $data)
+            ->respondSuccessMessage('Data successfully created');
     }
 
     /**
@@ -39,7 +42,9 @@ class LanguageController extends ApiController
      */
     public function show(Language $language): JsonResponse
     {
-        //
+        return $this
+            ->appendBody('data', $language)
+            ->respondSuccessMessage('Data successfully returned');
     }
 
     /**
@@ -51,7 +56,10 @@ class LanguageController extends ApiController
      */
     public function update(UpdateLanguageRequest $request, Language $language): JsonResponse
     {
-        //
+        $language->update($request->validated());
+        return $this
+            ->appendBody('data', $language)
+            ->respondSuccessMessage('Data successfully updated');
     }
 
     /**
@@ -63,8 +71,10 @@ class LanguageController extends ApiController
     public function destroy(Language $language): JsonResponse
     {
         if($language->delete()) {
-            return response()->json(['success' => true]);
+
+            return $this->respondSuccessMessage('Data successfully deleted');
         }
-        return response()->json(['success' => false]);
+
+        return $this->respondSuccessMessage('Unknown error');
     }
 }

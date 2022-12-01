@@ -28,7 +28,10 @@ class BannerController extends ApiController
      */
     public function store(StoreBannerRequest $request): JsonResponse
     {
-        //
+        $data = Banner::create($request->validated());
+        return $this
+            ->appendBody('data', $data)
+            ->respondSuccessMessage('Data successfully created');
     }
 
     /**
@@ -39,7 +42,9 @@ class BannerController extends ApiController
      */
     public function show(Banner $banner): JsonResponse
     {
-        //
+        return $this
+            ->appendBody('data', $banner)
+            ->respondSuccessMessage('Data successfully returned');
     }
 
     /**
@@ -51,7 +56,10 @@ class BannerController extends ApiController
      */
     public function update(UpdateBannerRequest $request, Banner $banner): JsonResponse
     {
-        //
+        $banner->update($request->validated());
+        return $this
+            ->appendBody('data', $banner)
+            ->respondSuccessMessage('Data successfully updated');
     }
 
     /**
@@ -63,8 +71,10 @@ class BannerController extends ApiController
     public function destroy(Banner $banner): JsonResponse
     {
         if($banner->delete()) {
-            return response()->json(['success' => true]);
+
+            return $this->respondSuccessMessage('Data successfully deleted');
         }
-        return response()->json(['success' => false]);
+
+        return $this->respondSuccessMessage('Unknown error');
     }
 }

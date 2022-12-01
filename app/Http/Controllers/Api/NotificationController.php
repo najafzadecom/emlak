@@ -28,7 +28,10 @@ class NotificationController extends ApiController
      */
     public function store(StoreNotificationRequest $request): JsonResponse
     {
-        //
+        $data = Notification::create($request->validated());
+        return $this
+            ->appendBody('data', $data)
+            ->respondSuccessMessage('Data successfully created');
     }
 
     /**
@@ -39,7 +42,9 @@ class NotificationController extends ApiController
      */
     public function show(Notification $notification): JsonResponse
     {
-        //
+        return $this
+            ->appendBody('data', $notification)
+            ->respondSuccessMessage('Data successfully returned');
     }
 
     /**
@@ -51,7 +56,10 @@ class NotificationController extends ApiController
      */
     public function update(UpdateNotificationRequest $request, Notification $notification): JsonResponse
     {
-        //
+        $notification->update($request->validated());
+        return $this
+            ->appendBody('data', $notification)
+            ->respondSuccessMessage('Data successfully updated');
     }
 
     /**
@@ -63,8 +71,10 @@ class NotificationController extends ApiController
     public function destroy(Notification $notification): JsonResponse
     {
         if($notification->delete()) {
-            return response()->json(['success' => true]);
+
+            return $this->respondSuccessMessage('Data successfully deleted');
         }
-        return response()->json(['success' => false]);
+
+        return $this->respondSuccessMessage('Unknown error');
     }
 }

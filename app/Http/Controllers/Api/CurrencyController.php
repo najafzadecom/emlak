@@ -28,7 +28,10 @@ class CurrencyController extends ApiController
      */
     public function store(StoreCurrencyRequest $request): JsonResponse
     {
-        //
+        $data = Currency::create($request->validated());
+        return $this
+            ->appendBody('data', $data)
+            ->respondSuccessMessage('Data successfully created');
     }
 
     /**
@@ -39,7 +42,9 @@ class CurrencyController extends ApiController
      */
     public function show(Currency $currency): JsonResponse
     {
-        //
+        return $this
+            ->appendBody('data', $currency)
+            ->respondSuccessMessage('Data successfully returned');
     }
 
     /**
@@ -51,7 +56,10 @@ class CurrencyController extends ApiController
      */
     public function update(UpdateCurrencyRequest $request, Currency $currency): JsonResponse
     {
-        //
+        $currency->update($request->validated());
+        return $this
+            ->appendBody('data', $currency)
+            ->respondSuccessMessage('Data successfully updated');
     }
 
     /**
@@ -63,8 +71,10 @@ class CurrencyController extends ApiController
     public function destroy(Currency $currency): JsonResponse
     {
         if($currency->delete()) {
-            return response()->json(['success' => true]);
+
+            return $this->respondSuccessMessage('Data successfully deleted');
         }
-        return response()->json(['success' => false]);
+
+        return $this->respondSuccessMessage('Unknown error');
     }
 }

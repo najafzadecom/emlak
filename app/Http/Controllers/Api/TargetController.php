@@ -6,15 +6,16 @@ use App\Http\Controllers\ApiController;
 use App\Models\Target;
 use App\Http\Requests\StoreTargetRequest;
 use App\Http\Requests\UpdateTargetRequest;
+use Illuminate\Http\JsonResponse;
 
 class TargetController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
         //
     }
@@ -22,45 +23,58 @@ class TargetController extends ApiController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreTargetRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreTargetRequest $request
+     * @return JsonResponse
      */
-    public function store(StoreTargetRequest $request)
+    public function store(StoreTargetRequest $request): JsonResponse
     {
-        //
+        $data = Target::create($request->validated());
+        return $this
+            ->appendBody('data', $data)
+            ->respondSuccessMessage('Data successfully created');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Target  $target
-     * @return \Illuminate\Http\Response
+     * @param Target $target
+     * @return JsonResponse
      */
-    public function show(Target $target)
+    public function show(Target $target): JsonResponse
     {
-        //
+        return $this
+            ->appendBody('data', $target)
+            ->respondSuccessMessage('Data successfully returned');
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateTargetRequest  $request
-     * @param  \App\Models\Target  $target
-     * @return \Illuminate\Http\Response
+     * @param UpdateTargetRequest $request
+     * @param Target $target
+     * @return JsonResponse
      */
-    public function update(UpdateTargetRequest $request, Target $target)
+    public function update(UpdateTargetRequest $request, Target $target): JsonResponse
     {
-        //
+        $target->update($request->validated());
+        return $this
+            ->appendBody('data', $target)
+            ->respondSuccessMessage('Data successfully updated');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Target  $target
-     * @return \Illuminate\Http\Response
+     * @param Target $target
+     * @return JsonResponse
      */
-    public function destroy(Target $target)
+    public function destroy(Target $target): JsonResponse
     {
-        //
+        if($target->delete()) {
+
+            return $this->respondSuccessMessage('Data successfully deleted');
+        }
+
+        return $this->respondSuccessMessage('Unknown error');
     }
 }

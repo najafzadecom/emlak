@@ -28,7 +28,10 @@ class NewsController extends ApiController
      */
     public function store(StoreNewsRequest $request): JsonResponse
     {
-        //
+        $data = News::create($request->validated());
+        return $this
+            ->appendBody('data', $data)
+            ->respondSuccessMessage('Data successfully created');
     }
 
     /**
@@ -39,7 +42,9 @@ class NewsController extends ApiController
      */
     public function show(News $news): JsonResponse
     {
-        //
+        return $this
+            ->appendBody('data', $news)
+            ->respondSuccessMessage('Data successfully returned');
     }
 
     /**
@@ -51,7 +56,10 @@ class NewsController extends ApiController
      */
     public function update(UpdateNewsRequest $request, News $news): JsonResponse
     {
-        //
+        $news->update($request->validated());
+        return $this
+            ->appendBody('data', $news)
+            ->respondSuccessMessage('Data successfully updated');
     }
 
     /**
@@ -63,8 +71,10 @@ class NewsController extends ApiController
     public function destroy(News $news): JsonResponse
     {
         if($news->delete()) {
-            return response()->json(['success' => true]);
+
+            return $this->respondSuccessMessage('Data successfully deleted');
         }
-        return response()->json(['success' => false]);
+
+        return $this->respondSuccessMessage('Unknown error');
     }
 }

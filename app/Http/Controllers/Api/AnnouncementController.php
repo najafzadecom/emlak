@@ -28,7 +28,10 @@ class AnnouncementController extends ApiController
      */
     public function store(StoreAnnouncementRequest $request): JsonResponse
     {
-        //
+        $data = Announcement::create($request->validated());
+        return $this
+            ->appendBody('data', $data)
+            ->respondSuccessMessage('Data successfully created');
     }
 
     /**
@@ -39,7 +42,9 @@ class AnnouncementController extends ApiController
      */
     public function show(Announcement $announcement): JsonResponse
     {
-        //
+        return $this
+            ->appendBody('data', $announcement)
+            ->respondSuccessMessage('Data successfully returned');
     }
 
     /**
@@ -51,7 +56,10 @@ class AnnouncementController extends ApiController
      */
     public function update(UpdateAnnouncementRequest $request, Announcement $announcement): JsonResponse
     {
-        //
+        $announcement->update($request->validated());
+        return $this
+            ->appendBody('data', $announcement)
+            ->respondSuccessMessage('Data successfully updated');
     }
 
     /**
@@ -63,8 +71,10 @@ class AnnouncementController extends ApiController
     public function destroy(Announcement $announcement): JsonResponse
     {
         if($announcement->delete()) {
-            return response()->json(['success' => true]);
+
+            return $this->respondSuccessMessage('Data successfully deleted');
         }
-        return response()->json(['success' => false]);
+
+        return $this->respondSuccessMessage('Unknown error');
     }
 }

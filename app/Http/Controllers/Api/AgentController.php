@@ -28,7 +28,10 @@ class AgentController extends ApiController
      */
     public function store(StoreAgentRequest $request): JsonResponse
     {
-        //
+        $data = Agent::create($request->validated());
+        return $this
+            ->appendBody('data', $data)
+            ->respondSuccessMessage('Data successfully created');
     }
 
     /**
@@ -39,7 +42,9 @@ class AgentController extends ApiController
      */
     public function show(Agent $agent): JsonResponse
     {
-        //
+        return $this
+            ->appendBody('data', $agent)
+            ->respondSuccessMessage('Data successfully returned');
     }
 
     /**
@@ -51,7 +56,10 @@ class AgentController extends ApiController
      */
     public function update(UpdateAgentRequest $request, Agent $agent): JsonResponse
     {
-        //
+        $agent->update($request->validated());
+        return $this
+            ->appendBody('data', $agent)
+            ->respondSuccessMessage('Data successfully updated');
     }
 
     /**
@@ -63,8 +71,10 @@ class AgentController extends ApiController
     public function destroy(Agent $agent): JsonResponse
     {
         if($agent->delete()) {
-            return response()->json(['success' => true]);
+
+            return $this->respondSuccessMessage('Data successfully deleted');
         }
-        return response()->json(['success' => false]);
+
+        return $this->respondSuccessMessage('Unknown error');
     }
 }

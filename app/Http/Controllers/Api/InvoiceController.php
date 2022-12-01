@@ -28,7 +28,10 @@ class InvoiceController extends ApiController
      */
     public function store(StoreInvoiceRequest $request): JsonResponse
     {
-        //
+        $data = Invoice::create($request->validated());
+        return $this
+            ->appendBody('data', $data)
+            ->respondSuccessMessage('Data successfully created');
     }
 
     /**
@@ -39,7 +42,9 @@ class InvoiceController extends ApiController
      */
     public function show(Invoice $invoice): JsonResponse
     {
-        //
+        return $this
+            ->appendBody('data', $invoice)
+            ->respondSuccessMessage('Data successfully returned');
     }
 
     /**
@@ -51,7 +56,10 @@ class InvoiceController extends ApiController
      */
     public function update(UpdateInvoiceRequest $request, Invoice $invoice): JsonResponse
     {
-        //
+        $invoice->update($request->validated());
+        return $this
+            ->appendBody('data', $invoice)
+            ->respondSuccessMessage('Data successfully updated');
     }
 
     /**
@@ -63,8 +71,10 @@ class InvoiceController extends ApiController
     public function destroy(Invoice $invoice): JsonResponse
     {
         if($invoice->delete()) {
-            return response()->json(['success' => true]);
+
+            return $this->respondSuccessMessage('Data successfully deleted');
         }
-        return response()->json(['success' => false]);
+
+        return $this->respondSuccessMessage('Unknown error');
     }
 }

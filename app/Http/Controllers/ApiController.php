@@ -166,9 +166,11 @@ class ApiController extends Controller
     /**
      * Response ready success message template
      *
+     * @param $message
+     * @param string $key
      * @return JsonResponse
      */
-    public function respondSuccessMessage($message, $key = 'message')
+    public function respondSuccessMessage($message, $key = 'message'): JsonResponse
     {
         return $this
             ->appendBody('success', true)
@@ -180,9 +182,10 @@ class ApiController extends Controller
     /**
      * Response ready error message template
      *
+     * @param $message
      * @return JsonResponse
      */
-    public function respondErrorMessage($message)
+    public function respondErrorMessage($message): JsonResponse
     {
         return $this
             ->appendBody('success', false)

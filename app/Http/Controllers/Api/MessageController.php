@@ -28,7 +28,10 @@ class MessageController extends ApiController
      */
     public function store(StoreMessageRequest $request): JsonResponse
     {
-        //
+        $data = Message::create($request->validated());
+        return $this
+            ->appendBody('data', $data)
+            ->respondSuccessMessage('Data successfully created');
     }
 
     /**
@@ -39,7 +42,9 @@ class MessageController extends ApiController
      */
     public function show(Message $message): JsonResponse
     {
-        //
+        return $this
+            ->appendBody('data', $message)
+            ->respondSuccessMessage('Data successfully returned');
     }
 
     /**
@@ -51,7 +56,10 @@ class MessageController extends ApiController
      */
     public function update(UpdateMessageRequest $request, Message $message): JsonResponse
     {
-        //
+        $message->update($request->validated());
+        return $this
+            ->appendBody('data', $message)
+            ->respondSuccessMessage('Data successfully updated');
     }
 
     /**
@@ -63,8 +71,10 @@ class MessageController extends ApiController
     public function destroy(Message $message): JsonResponse
     {
         if($message->delete()) {
-            return response()->json(['success' => true]);
+
+            return $this->respondSuccessMessage('Data successfully deleted');
         }
-        return response()->json(['success' => false]);
+
+        return $this->respondSuccessMessage('Unknown error');
     }
 }

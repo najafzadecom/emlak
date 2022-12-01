@@ -28,7 +28,10 @@ class CompareController extends ApiController
      */
     public function store(StoreCompareRequest $request): JsonResponse
     {
-        //
+        $data = Compare::create($request->validated());
+        return $this
+            ->appendBody('data', $data)
+            ->respondSuccessMessage('Data successfully created');
     }
 
     /**
@@ -39,7 +42,9 @@ class CompareController extends ApiController
      */
     public function show(Compare $compare): JsonResponse
     {
-        //
+        return $this
+            ->appendBody('data', $compare)
+            ->respondSuccessMessage('Data successfully returned');
     }
 
     /**
@@ -51,7 +56,10 @@ class CompareController extends ApiController
      */
     public function update(UpdateCompareRequest $request, Compare $compare): JsonResponse
     {
-        //
+        $compare->update($request->validated());
+        return $this
+            ->appendBody('data', $compare)
+            ->respondSuccessMessage('Data successfully updated');
     }
 
     /**
@@ -63,8 +71,10 @@ class CompareController extends ApiController
     public function destroy(Compare $compare): JsonResponse
     {
         if($compare->delete()) {
-            return response()->json(['success' => true]);
+
+            return $this->respondSuccessMessage('Data successfully deleted');
         }
-        return response()->json(['success' => false]);
+
+        return $this->respondSuccessMessage('Unknown error');
     }
 }

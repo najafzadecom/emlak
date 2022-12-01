@@ -29,7 +29,10 @@ class CommentController extends ApiController
      */
     public function store(StoreCommentRequest $request): JsonResponse
     {
-        //
+        $data = Comment::create($request->validated());
+        return $this
+            ->appendBody('data', $data)
+            ->respondSuccessMessage('Data successfully created');
     }
 
     /**
@@ -40,7 +43,9 @@ class CommentController extends ApiController
      */
     public function show(Comment $comment): JsonResponse
     {
-        //
+        return $this
+            ->appendBody('data', $comment)
+            ->respondSuccessMessage('Data successfully returned');
     }
 
     /**
@@ -52,7 +57,10 @@ class CommentController extends ApiController
      */
     public function update(UpdateCommentRequest $request, Comment $comment): JsonResponse
     {
-        //
+        $comment->update($request->validated());
+        return $this
+            ->appendBody('data', $comment)
+            ->respondSuccessMessage('Data successfully updated');
     }
 
     /**
@@ -64,8 +72,10 @@ class CommentController extends ApiController
     public function destroy(Comment $comment): JsonResponse
     {
         if($comment->delete()) {
-            return response()->json(['success' => true]);
+
+            return $this->respondSuccessMessage('Data successfully deleted');
         }
-        return response()->json(['success' => false]);
+
+        return $this->respondSuccessMessage('Unknown error');
     }
 }

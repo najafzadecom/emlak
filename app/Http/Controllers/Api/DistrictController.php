@@ -28,7 +28,10 @@ class DistrictController extends ApiController
      */
     public function store(StoreDistrictRequest $request): JsonResponse
     {
-        //
+        $data = District::create($request->validated());
+        return $this
+            ->appendBody('data', $data)
+            ->respondSuccessMessage('Data successfully created');
     }
 
     /**
@@ -39,7 +42,9 @@ class DistrictController extends ApiController
      */
     public function show(District $district): JsonResponse
     {
-        //
+        return $this
+            ->appendBody('data', $district)
+            ->respondSuccessMessage('Data successfully returned');
     }
 
     /**
@@ -51,7 +56,10 @@ class DistrictController extends ApiController
      */
     public function update(UpdateDistrictRequest $request, District $district): JsonResponse
     {
-        //
+        $district->update($request->validated());
+        return $this
+            ->appendBody('data', $district)
+            ->respondSuccessMessage('Data successfully updated');
     }
 
     /**
@@ -63,8 +71,10 @@ class DistrictController extends ApiController
     public function destroy(District $district): JsonResponse
     {
         if($district->delete()) {
-            return response()->json(['success' => true]);
+
+            return $this->respondSuccessMessage('Data successfully deleted');
         }
-        return response()->json(['success' => false]);
+
+        return $this->respondSuccessMessage('Unknown error');
     }
 }

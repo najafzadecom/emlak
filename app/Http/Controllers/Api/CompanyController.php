@@ -28,7 +28,10 @@ class CompanyController extends ApiController
      */
     public function store(StoreCompanyRequest $request): JsonResponse
     {
-        //
+        $data = Company::create($request->validated());
+        return $this
+            ->appendBody('data', $data)
+            ->respondSuccessMessage('Data successfully created');
     }
 
     /**
@@ -39,7 +42,9 @@ class CompanyController extends ApiController
      */
     public function show(Company $company): JsonResponse
     {
-        //
+        return $this
+            ->appendBody('data', $company)
+            ->respondSuccessMessage('Data successfully returned');
     }
 
     /**
@@ -51,7 +56,10 @@ class CompanyController extends ApiController
      */
     public function update(UpdateCompanyRequest $request, Company $company): JsonResponse
     {
-        //
+        $company->update($request->validated());
+        return $this
+            ->appendBody('data', $company)
+            ->respondSuccessMessage('Data successfully updated');
     }
 
     /**
@@ -63,8 +71,10 @@ class CompanyController extends ApiController
     public function destroy(Company $company): JsonResponse
     {
         if($company->delete()) {
-            return response()->json(['success' => true]);
+
+            return $this->respondSuccessMessage('Data successfully deleted');
         }
-        return response()->json(['success' => false]);
+
+        return $this->respondSuccessMessage('Unknown error');
     }
 }

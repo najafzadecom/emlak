@@ -28,7 +28,10 @@ class OptionController extends ApiController
      */
     public function store(StoreOptionRequest $request): JsonResponse
     {
-        //
+        $data = Option::create($request->validated());
+        return $this
+            ->appendBody('data', $data)
+            ->respondSuccessMessage('Data successfully created');
     }
 
     /**
@@ -39,7 +42,9 @@ class OptionController extends ApiController
      */
     public function show(Option $option): JsonResponse
     {
-        //
+        return $this
+            ->appendBody('data', $option)
+            ->respondSuccessMessage('Data successfully returned');
     }
 
     /**
@@ -51,7 +56,10 @@ class OptionController extends ApiController
      */
     public function update(UpdateOptionRequest $request, Option $option): JsonResponse
     {
-        //
+        $option->update($request->validated());
+        return $this
+            ->appendBody('data', $option)
+            ->respondSuccessMessage('Data successfully updated');
     }
 
     /**
@@ -63,8 +71,10 @@ class OptionController extends ApiController
     public function destroy(Option $option): JsonResponse
     {
         if($option->delete()) {
-            return response()->json(['success' => true]);
+
+            return $this->respondSuccessMessage('Data successfully deleted');
         }
-        return response()->json(['success' => false]);
+
+        return $this->respondSuccessMessage('Unknown error');
     }
 }

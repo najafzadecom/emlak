@@ -28,7 +28,10 @@ class CountryController extends ApiController
      */
     public function store(StoreCountryRequest $request): JsonResponse
     {
-        //
+        $data = Country::create($request->validated());
+        return $this
+            ->appendBody('data', $data)
+            ->respondSuccessMessage('Data successfully created');
     }
 
     /**
@@ -39,7 +42,9 @@ class CountryController extends ApiController
      */
     public function show(Country $country): JsonResponse
     {
-        //
+        return $this
+            ->appendBody('data', $country)
+            ->respondSuccessMessage('Data successfully returned');
     }
 
     /**
@@ -51,7 +56,10 @@ class CountryController extends ApiController
      */
     public function update(UpdateCountryRequest $request, Country $country): JsonResponse
     {
-        //
+        $country->update($request->validated());
+        return $this
+            ->appendBody('data', $country)
+            ->respondSuccessMessage('Data successfully updated');
     }
 
     /**
@@ -63,8 +71,10 @@ class CountryController extends ApiController
     public function destroy(Country $country): JsonResponse
     {
         if($country->delete()) {
-            return response()->json(['success' => true]);
+
+            return $this->respondSuccessMessage('Data successfully deleted');
         }
-        return response()->json(['success' => false]);
+
+        return $this->respondSuccessMessage('Unknown error');
     }
 }

@@ -28,7 +28,10 @@ class MenuController extends ApiController
      */
     public function store(StoreMenuRequest $request): JsonResponse
     {
-        //
+        $data = Menu::create($request->validated());
+        return $this
+            ->appendBody('data', $data)
+            ->respondSuccessMessage('Data successfully created');
     }
 
     /**
@@ -39,7 +42,9 @@ class MenuController extends ApiController
      */
     public function show(Menu $menu): JsonResponse
     {
-        //
+        return $this
+            ->appendBody('data', $menu)
+            ->respondSuccessMessage('Data successfully returned');
     }
 
     /**
@@ -51,7 +56,10 @@ class MenuController extends ApiController
      */
     public function update(UpdateMenuRequest $request, Menu $menu): JsonResponse
     {
-        //
+        $menu->update($request->validated());
+        return $this
+            ->appendBody('data', $menu)
+            ->respondSuccessMessage('Data successfully updated');
     }
 
     /**
@@ -63,8 +71,10 @@ class MenuController extends ApiController
     public function destroy(Menu $menu): JsonResponse
     {
         if($menu->delete()) {
-            return response()->json(['success' => true]);
+
+            return $this->respondSuccessMessage('Data successfully deleted');
         }
-        return response()->json(['success' => false]);
+
+        return $this->respondSuccessMessage('Unknown error');
     }
 }

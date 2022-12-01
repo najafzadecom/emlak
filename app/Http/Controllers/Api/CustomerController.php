@@ -28,7 +28,10 @@ class CustomerController extends ApiController
      */
     public function store(StoreCustomerRequest $request): JsonResponse
     {
-        //
+        $data = Customer::create($request->validated());
+        return $this
+            ->appendBody('data', $data)
+            ->respondSuccessMessage('Data successfully created');
     }
 
     /**
@@ -39,7 +42,9 @@ class CustomerController extends ApiController
      */
     public function show(Customer $customer): JsonResponse
     {
-        //
+        return $this
+            ->appendBody('data', $customer)
+            ->respondSuccessMessage('Data successfully returned');
     }
 
     /**
@@ -51,7 +56,10 @@ class CustomerController extends ApiController
      */
     public function update(UpdateCustomerRequest $request, Customer $customer): JsonResponse
     {
-        //
+        $customer->update($request->validated());
+        return $this
+            ->appendBody('data', $customer)
+            ->respondSuccessMessage('Data successfully updated');
     }
 
     /**
@@ -63,8 +71,10 @@ class CustomerController extends ApiController
     public function destroy(Customer $customer): JsonResponse
     {
         if($customer->delete()) {
-            return response()->json(['success' => true]);
+
+            return $this->respondSuccessMessage('Data successfully deleted');
         }
-        return response()->json(['success' => false]);
+
+        return $this->respondSuccessMessage('Unknown error');
     }
 }

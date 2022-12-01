@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Agent;
 use App\Http\Requests\StoreAgentRequest;
 use App\Http\Requests\UpdateAgentRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class AgentController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -22,7 +24,7 @@ class AgentController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -33,7 +35,7 @@ class AgentController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StoreAgentRequest $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(StoreAgentRequest $request)
     {
@@ -44,7 +46,7 @@ class AgentController extends Controller
      * Display the specified resource.
      *
      * @param Agent $agent
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(Agent $agent)
     {
@@ -55,7 +57,7 @@ class AgentController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param Agent $agent
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(Agent $agent)
     {
@@ -67,7 +69,7 @@ class AgentController extends Controller
      *
      * @param UpdateAgentRequest $request
      * @param Agent $agent
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(UpdateAgentRequest $request, Agent $agent)
     {

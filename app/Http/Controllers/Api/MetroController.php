@@ -28,7 +28,10 @@ class MetroController extends ApiController
      */
     public function store(StoreMetroRequest $request): JsonResponse
     {
-        //
+        $data = Metro::create($request->validated());
+        return $this
+            ->appendBody('data', $data)
+            ->respondSuccessMessage('Data successfully created');
     }
 
     /**
@@ -39,7 +42,9 @@ class MetroController extends ApiController
      */
     public function show(Metro $metro): JsonResponse
     {
-        //
+        return $this
+            ->appendBody('data', $metro)
+            ->respondSuccessMessage('Data successfully returned');
     }
 
     /**
@@ -51,7 +56,10 @@ class MetroController extends ApiController
      */
     public function update(UpdateMetroRequest $request, Metro $metro): JsonResponse
     {
-        //
+        $metro->update($request->validated());
+        return $this
+            ->appendBody('data', $metro)
+            ->respondSuccessMessage('Data successfully updated');
     }
 
     /**
@@ -63,8 +71,10 @@ class MetroController extends ApiController
     public function destroy(Metro $metro): JsonResponse
     {
         if($metro->delete()) {
-            return response()->json(['success' => true]);
+
+            return $this->respondSuccessMessage('Data successfully deleted');
         }
-        return response()->json(['success' => false]);
+
+        return $this->respondSuccessMessage('Unknown error');
     }
 }

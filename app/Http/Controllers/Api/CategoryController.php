@@ -28,7 +28,10 @@ class CategoryController extends ApiController
      */
     public function store(StoreCategoryRequest $request): JsonResponse
     {
-        //
+        $data = Category::create($request->validated());
+        return $this
+            ->appendBody('data', $data)
+            ->respondSuccessMessage('Data successfully created');
     }
 
     /**
@@ -39,7 +42,9 @@ class CategoryController extends ApiController
      */
     public function show(Category $category): JsonResponse
     {
-        //
+        return $this
+            ->appendBody('data', $category)
+            ->respondSuccessMessage('Data successfully returned');
     }
 
     /**
@@ -51,7 +56,10 @@ class CategoryController extends ApiController
      */
     public function update(UpdateCategoryRequest $request, Category $category): JsonResponse
     {
-        //
+        $category->update($request->validated());
+        return $this
+            ->appendBody('data', $category)
+            ->respondSuccessMessage('Data successfully updated');
     }
 
     /**
@@ -63,8 +71,10 @@ class CategoryController extends ApiController
     public function destroy(Category $category): JsonResponse
     {
         if($category->delete()) {
-            return response()->json(['success' => true]);
+
+            return $this->respondSuccessMessage('Data successfully deleted');
         }
-        return response()->json(['success' => false]);
+
+        return $this->respondSuccessMessage('Unknown error');
     }
 }

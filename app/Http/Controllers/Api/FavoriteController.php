@@ -28,7 +28,10 @@ class FavoriteController extends ApiController
      */
     public function store(StoreFavoriteRequest $request): JsonResponse
     {
-        //
+        $data = Favorite::create($request->validated());
+        return $this
+            ->appendBody('data', $data)
+            ->respondSuccessMessage('Data successfully created');
     }
 
     /**
@@ -39,7 +42,9 @@ class FavoriteController extends ApiController
      */
     public function show(Favorite $favorite): JsonResponse
     {
-        //
+        return $this
+            ->appendBody('data', $favorite)
+            ->respondSuccessMessage('Data successfully returned');
     }
 
     /**
@@ -51,7 +56,10 @@ class FavoriteController extends ApiController
      */
     public function update(UpdateFavoriteRequest $request, Favorite $favorite): JsonResponse
     {
-        //
+        $favorite->update($request->validated());
+        return $this
+            ->appendBody('data', $favorite)
+            ->respondSuccessMessage('Data successfully updated');
     }
 
     /**
@@ -63,8 +71,10 @@ class FavoriteController extends ApiController
     public function destroy(Favorite $favorite): JsonResponse
     {
         if($favorite->delete()) {
-            return response()->json(['success' => true]);
+
+            return $this->respondSuccessMessage('Data successfully deleted');
         }
-        return response()->json(['success' => false]);
+
+        return $this->respondSuccessMessage('Unknown error');
     }
 }

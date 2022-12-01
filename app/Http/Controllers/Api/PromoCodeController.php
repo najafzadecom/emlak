@@ -6,15 +6,16 @@ use App\Http\Controllers\ApiController;
 use App\Models\PromoCode;
 use App\Http\Requests\StorePromoCodeRequest;
 use App\Http\Requests\UpdatePromoCodeRequest;
+use Illuminate\Http\JsonResponse;
 
 class PromoCodeController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
         //
     }
@@ -22,45 +23,58 @@ class PromoCodeController extends ApiController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StorePromoCodeRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param StorePromoCodeRequest $request
+     * @return JsonResponse
      */
-    public function store(StorePromoCodeRequest $request)
+    public function store(StorePromoCodeRequest $request): JsonResponse
     {
-        //
+        $data = PromoCode::create($request->validated());
+        return $this
+            ->appendBody('data', $data)
+            ->respondSuccessMessage('Data successfully created');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\PromoCode  $promoCode
-     * @return \Illuminate\Http\Response
+     * @param PromoCode $promoCode
+     * @return JsonResponse
      */
-    public function show(PromoCode $promoCode)
+    public function show(PromoCode $promoCode): JsonResponse
     {
-        //
+        return $this
+            ->appendBody('data', $promoCode)
+            ->respondSuccessMessage('Data successfully returned');
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdatePromoCodeRequest  $request
-     * @param  \App\Models\PromoCode  $promoCode
-     * @return \Illuminate\Http\Response
+     * @param UpdatePromoCodeRequest $request
+     * @param PromoCode $promoCode
+     * @return JsonResponse
      */
-    public function update(UpdatePromoCodeRequest $request, PromoCode $promoCode)
+    public function update(UpdatePromoCodeRequest $request, PromoCode $promoCode): JsonResponse
     {
-        //
+        $promoCode->update($request->validated());
+        return $this
+            ->appendBody('data', $promoCode)
+            ->respondSuccessMessage('Data successfully updated');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\PromoCode  $promoCode
-     * @return \Illuminate\Http\Response
+     * @param PromoCode $promoCode
+     * @return JsonResponse
      */
-    public function destroy(PromoCode $promoCode)
+    public function destroy(PromoCode $promoCode): JsonResponse
     {
-        //
+        if($promoCode->delete()) {
+
+            return $this->respondSuccessMessage('Data successfully deleted');
+        }
+
+        return $this->respondSuccessMessage('Unknown error');
     }
 }
