@@ -9,6 +9,19 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * App\Models\Customer
+ *
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
+ * @property-read int|null $tokens_count
+ * @method static \Database\Factories\CustomerFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer query()
+ * @mixin \Eloquent
+ */
 class Customer extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, Enable;

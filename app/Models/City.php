@@ -8,6 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use  Spatie\Translatable\HasTranslations;
 
+/**
+ * App\Models\City
+ *
+ * @property-read \App\Models\Country|null $country
+ * @property-read \App\Models\Region|null $region
+ * @method static \Database\Factories\CityFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|City newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|City newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|City query()
+ * @mixin \Eloquent
+ */
 class City extends Model
 {
     use HasFactory, Enable,  HasTranslations;

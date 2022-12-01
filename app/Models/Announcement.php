@@ -11,6 +11,28 @@ use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 
+/**
+ * App\Models\Announcement
+ *
+ * @property-read \App\Models\Category|null $category
+ * @property-read \App\Models\City|null $city
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
+ * @property-read int|null $comments_count
+ * @property-read \App\Models\Company|null $company
+ * @property-read \App\Models\Country|null $country
+ * @property-read \App\Models\Currency|null $currency
+ * @property-read \App\Models\Customer|null $customer
+ * @property-read \App\Models\District|null $district
+ * @property-read \App\Models\Metro|null $metro
+ * @property-read \App\Models\Region|null $region
+ * @property-read \App\Models\Target|null $target
+ * @property-read \App\Models\Village|null $village
+ * @method static \Database\Factories\AnnouncementFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|Announcement newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Announcement newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Announcement query()
+ * @mixin \Eloquent
+ */
 class Announcement extends Model
 {
     use HasFactory, Enable, HasTranslations, HasSlug;

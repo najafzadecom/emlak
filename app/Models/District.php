@@ -8,6 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Translatable\HasTranslations;
 
+/**
+ * App\Models\District
+ *
+ * @property-read \App\Models\City|null $city
+ * @method static \Database\Factories\DistrictFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|District newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|District newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|District query()
+ * @mixin \Eloquent
+ */
 class District extends Model
 {
     use HasFactory, Enable,  HasTranslations;
